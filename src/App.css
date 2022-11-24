@@ -35,12 +35,14 @@ margin-top: 30px;
   
 }
 
-.home{
-
-}
-
 .home-card{
   max-width: 500px;
   height: max-content;
   margin: 26px auto;
+}
+
+#toast-container{
+  top:50px !important;
+  left:20px !important;
+  right:auto !important;
 }
