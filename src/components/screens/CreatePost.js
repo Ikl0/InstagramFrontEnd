@@ -1,9 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import M from 'materialize-css';
 
 const CreatePost = () => {
+    const navigate = useNavigate()
+
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [image, setImage] = useState("")
+    const [url, setUrl] = useState("")
+
+
+    const postData = () => {
+        fetch("/createpost", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            },
+            body: JSON.stringify({
+                title,
+                body
+            })
+        }).then(res => res.json())
+            .then(data => {
+
+                if (data.error) {
+                    M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                }
+                else {
+                    M.toast({ html: "Created post Successfully", classes: "#43a047 green darken-1" })
+                    navigate('/')
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+    }
+
+
 
     return (
         <div className="card input field"
@@ -19,13 +53,13 @@ const CreatePost = () => {
             <div className="file-field input-field">
                 <div className="btn #64b5f6 blue darken-1">
                     <span>Image</span>
-                    <input type="file" onChange={(e)=>setImage(e.target.files[0])} />
+                    <input type="file" onChange={(e) => setImage(e.target.files[0])} />
                 </div>
                 <div className="file-path-wrapper">
                     <input className="file-path validate" type="text" placeholder="Upload one or more files" />
                 </div>
             </div>
-            <button className="btn waves-effect waves-light #64b5f6 blue darken-1">Submit post</button>
+            <button className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => postData()}>Submit post</button>
         </div>
     )
 }
