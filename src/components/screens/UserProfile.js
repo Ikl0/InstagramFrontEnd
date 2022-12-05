@@ -4,12 +4,13 @@ import { useParams } from 'react-router-dom'
 
 const Profile = () => {
     const [userProfile, setProfile] = useState(null)
-    const [showfollow, setShowFollow] = useState(true)
     const { state, dispatch } = useContext(UserContext)
-    const { userid } = useParams()
+
+    const { userId } = useParams()
+    const [showfollow, setShowFollow] = useState(state ? !state.following.includes(userId) : true)
 
     useEffect(() => {
-        fetch(`/user/${userid}`, {
+        fetch(`/user/${userId}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
@@ -28,7 +29,7 @@ const Profile = () => {
                 "Authorization": "Bearer " + localStorage.getItem('jwt')
             },
             body: JSON.stringify({
-                followId: userid
+                followId: userId
             })
         }).then(res => res.json())
             .then(data => {
@@ -39,17 +40,17 @@ const Profile = () => {
                 //        ...userProfile,
                 //        followers:Response.data.following,
                 //        following:Response.data.followers
-               // })
-               setProfile((prevState)=>{
-                return {
-                    ...prevState,
-                    user:{
-                        ...prevState.user,
-                        followers:[...prevState.user.followers, data._id] //анекдот нумар 1
+                // })
+                setProfile((prevState) => {
+                    return {
+                        ...prevState,
+                        user: {
+                            ...prevState.user,
+                            followers: [...prevState.user.followers, data._id] //анекдот нумар 1
+                        }
                     }
-                }
-               })
-               setShowFollow(false)
+                })
+                setShowFollow(false)
             })
     }
 
@@ -61,7 +62,7 @@ const Profile = () => {
                 "Authorization": "Bearer " + localStorage.getItem('jwt')
             },
             body: JSON.stringify({
-                unfollowId: userid
+                unfollowId: userId
             })
         }).then(res => res.json())
             .then(data => {
@@ -72,18 +73,18 @@ const Profile = () => {
                 //        ...userProfile,
                 //        followers:Response.data.following,
                 //        following:Response.data.followers
-               // })
-               setProfile((prevState)=>{
-                const newFollower = prevState.user.followers.filter(item=> item != data._id)
-                return {
-                    ...prevState,
-                    user:{
-                        ...prevState.user,
-                        followers:newFollower //анекдот нумар 2
+                // })
+                setProfile((prevState) => {
+                    const newFollower = prevState.user.followers.filter(item => item != data._id)
+                    return {
+                        ...prevState,
+                        user: {
+                            ...prevState.user,
+                            followers: newFollower //анекдот нумар 2
+                        }
                     }
-                }
-               })
-               setShowFollow(true)
+                })
+                setShowFollow(true)
             })
     }
 
@@ -109,10 +110,10 @@ const Profile = () => {
                             <h6>{userProfile.user.following.length} following</h6>
                         </div>
                         {
-                            showfollow?
-                            <button style={{margin:"10px"}} className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => followUser()}>Follow</button>
-                            :
-                            <button style={{margin:"10px"}} className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => unfollowUser()}>UnFollow</button>
+                            showfollow ?
+                                <button style={{ margin: "10px" }} className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => followUser()}>Follow</button>
+                                :
+                                <button style={{ margin: "10px" }} className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => unfollowUser()}>UnFollow</button>
                         }
 
                     </div>
