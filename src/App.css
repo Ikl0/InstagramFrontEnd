@@ -55,3 +55,7 @@ margin-top: 30px;
   left:20px !important;
   right:auto !important;
 }
+
+.material-icons:hover{
+  cursor: pointer;
+}

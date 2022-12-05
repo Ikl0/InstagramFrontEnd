@@ -110,19 +110,19 @@ const Home = () => {
                 data.map((item) => {
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5>
+                            <h5 style={{padding:"5px"}}>
                                 <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile/"}>{item.postedBy.name}</Link> {item.postedBy._id == state._id && <i className="material-icons" style={{ float: "right" }}
                                     onClick={() => { deletePost(item._id) }}
                                 >delete</i>
                                 }</h5>
-                            <div className="card-image">
+                            <div className="card-image" style={{ paddingRight: "5px", paddingLeft: "5px" }}>
                                 <img src="https://images.unsplash.com/photo-1626836014893-37663794dca7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1146&q=80" />
                             </div>
                             <div className="card-content">
                                 {item.likes.includes(state._id)
                                     ?
                                     [
-                                        <i className="material-icons" style={{ color: "red", }}>favorite</i>,
+                                        <i className="material-icons" style={{ color: "red", float: "right"  }}>favorite</i>,
                                         <i className="material-icons" onClick={() => { dislikePost(item._id) }}>thumb_down</i>
                                     ]
                                     :
