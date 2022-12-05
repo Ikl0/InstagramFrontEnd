@@ -7,7 +7,7 @@ const Home = () => {
     const { state, dispatch } = useContext(UserContext)
 
     useEffect(() => {
-        fetch('/allpost', {
+        fetch('/allfollowposts', {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
@@ -110,7 +110,7 @@ const Home = () => {
                 data.map((item) => {
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5  style={{padding:"5px"}}>
+                            <h5 style={{padding:"5px"}}>
                                 <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile/"}>{item.postedBy.name}</Link> {item.postedBy._id == state._id && <i className="material-icons" style={{ float: "right" }}
                                     onClick={() => { deletePost(item._id) }}
                                 >delete</i>
@@ -122,7 +122,7 @@ const Home = () => {
                                 {item.likes.includes(state._id)
                                     ?
                                     [
-                                        <i className="material-icons" style={{ color: "red", float: "right" }}>favorite</i>,
+                                        <i className="material-icons" style={{ color: "red", float: "right"  }}>favorite</i>,
                                         <i className="material-icons" onClick={() => { dislikePost(item._id) }}>thumb_down</i>
                                     ]
                                     :
